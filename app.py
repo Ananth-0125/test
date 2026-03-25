@@ -27,11 +27,372 @@ st.set_page_config(
 )
 
 # ============================================================
-# RESPONSIVE CSS (same as before)
+# RESPONSIVE CSS (same as before, header kept)
 # ============================================================
 st.markdown("""
 <style>
-/* ... (same as earlier) ... */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&display=swap');
+
+/* Reset & base */
+html, body, [class*="css"] {
+    font-family: 'Inter', sans-serif !important;
+}
+.stApp {
+    background: #f5f7fa;
+}
+.block-container {
+    padding: 1rem 1rem 2rem 1rem !important;
+    max-width: 100% !important;
+}
+@media (min-width: 768px) {
+    .block-container {
+        padding: 1.4rem 2rem 2rem 2rem !important;
+    }
+}
+
+/* Sidebar */
+[data-testid="stSidebar"] {
+    background: #ffffff;
+    border-right: 1px solid #dde1e7;
+}
+[data-testid="stSidebar"] .block-container {
+    padding: 1.2rem 1rem !important;
+}
+
+/* Sidebar toggle button styling (visible) */
+[data-testid="stSidebarCollapseButton"] {
+    background: #1a3c5e !important;
+    border-radius: 0 6px 6px 0 !important;
+}
+[data-testid="stSidebarCollapseButton"]:hover {
+    background: #14304e !important;
+}
+[data-testid="stSidebarCollapseButton"] svg {
+    fill: #ffffff !important;
+}
+[data-testid="collapsedControl"] {
+    background: #1a3c5e !important;
+    border-radius: 0 6px 6px 0 !important;
+}
+[data-testid="collapsedControl"]:hover {
+    background: #14304e !important;
+}
+[data-testid="collapsedControl"] svg {
+    fill: #ffffff !important;
+}
+
+/* Page header */
+.page-header {
+    background: #1a3c5e;
+    border-radius: 10px;
+    padding: 20px 24px;
+    margin-bottom: 18px;
+    color: #ffffff;
+}
+.page-header h1 {
+    font-size: 1.5rem;
+    font-weight: 600;
+    margin: 0 0 5px 0;
+    letter-spacing: -0.2px;
+}
+.page-header p {
+    margin: 0;
+    font-size: 0.8rem;
+    color: rgba(255,255,255,0.7);
+}
+.header-tags {
+    margin-bottom: 8px;
+}
+.htag {
+    display: inline-block;
+    background: rgba(255,255,255,0.12);
+    border: 1px solid rgba(255,255,255,0.22);
+    color: rgba(255,255,255,0.9);
+    padding: 2px 10px;
+    border-radius: 3px;
+    font-size: 0.65rem;
+    font-family: 'JetBrains Mono', monospace;
+    margin-right: 5px;
+}
+@media (min-width: 768px) {
+    .page-header {
+        padding: 24px 30px;
+    }
+    .page-header h1 {
+        font-size: 1.55rem;
+    }
+    .page-header p {
+        font-size: 0.84rem;
+    }
+}
+
+/* Section labels */
+.section-label {
+    font-size: 0.67rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+    color: #6b7280;
+    margin-bottom: 10px;
+    padding-bottom: 6px;
+    border-bottom: 1px solid #e9ecef;
+    font-family: 'JetBrains Mono', monospace;
+}
+.sb-sec {
+    font-size: 0.66rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 1.3px;
+    color: #9ca3af;
+    margin: 14px 0 6px 0;
+    font-family: 'JetBrains Mono', monospace;
+}
+
+/* Chat window */
+.chat-window {
+    background: #ffffff;
+    border: 1px solid #dde1e7;
+    border-radius: 8px;
+    padding: 14px 16px;
+    height: 400px;
+    overflow-y: auto;
+    margin-bottom: 8px;
+}
+.bubble-user, .bubble-bot, .bubble-security {
+    max-width: 85%;
+    padding: 9px 14px;
+    font-size: 0.86rem;
+    line-height: 1.5;
+    margin-bottom: 8px;
+    clear: both;
+}
+.bubble-user {
+    background: #1a3c5e;
+    color: #ffffff;
+    border-radius: 14px 14px 3px 14px;
+    float: right;
+}
+.bubble-bot {
+    background: #f8f9fb;
+    border: 1px solid #dde1e7;
+    color: #1f2937;
+    border-radius: 14px 14px 14px 3px;
+    float: left;
+}
+.bubble-security {
+    background: #fef2f2;
+    border: 1px solid #fca5a5;
+    color: #7f1d1d;
+    border-radius: 14px 14px 14px 3px;
+    float: left;
+}
+.msg-meta {
+    font-size: 0.64rem;
+    color: #9ca3af;
+    margin-bottom: 6px;
+    font-family: 'JetBrains Mono', monospace;
+    display: flex;
+    gap: 5px;
+    flex-wrap: wrap;
+    align-items: center;
+    clear: both;
+}
+@media (min-width: 768px) {
+    .bubble-user, .bubble-bot, .bubble-security {
+        max-width: 70%;
+    }
+}
+
+/* Tags */
+.tag {
+    display: inline-block;
+    padding: 1px 7px;
+    border-radius: 3px;
+    font-size: 0.64rem;
+    font-weight: 500;
+    font-family: 'JetBrains Mono', monospace;
+}
+.t-intent { background: #eff6ff; color: #1d4ed8; border: 1px solid #bfdbfe; }
+.t-neg    { background: #fef2f2; color: #b91c1c; border: 1px solid #fca5a5; }
+.t-neu    { background: #f9fafb; color: #374151; border: 1px solid #d1d5db; }
+.t-pos    { background: #f0fdf4; color: #166534; border: 1px solid #86efac; }
+.t-sec    { background: #fef2f2; color: #b91c1c; border: 1px solid #f87171; font-weight: 700; }
+.t-low    { background: #fffbeb; color: #92400e; border: 1px solid #fcd34d; }
+.t-good   { background: #f0fdf4; color: #166534; border: 1px solid #86efac; }
+.t-bad    { background: #fef2f2; color: #b91c1c; border: 1px solid #fca5a5; }
+
+/* Confidence bars */
+.bar-track { background: #e5e7eb; border-radius: 3px; height: 6px; margin: 3px 0 9px 0; overflow: hidden; }
+.bar-blue  { background: #1a3c5e; height: 6px; border-radius: 3px; }
+.bar-red   { background: #dc2626; height: 6px; border-radius: 3px; }
+
+/* Metric tiles */
+.metric-tile {
+    background: #ffffff;
+    border: 1px solid #dde1e7;
+    border-radius: 8px;
+    padding: 12px 10px;
+    text-align: center;
+}
+.metric-tile .val {
+    font-size: 1.3rem;
+    font-weight: 600;
+    color: #1a3c5e;
+    font-family: 'JetBrains Mono', monospace;
+    line-height: 1.1;
+}
+.metric-tile .lbl {
+    font-size: 0.62rem;
+    color: #9ca3af;
+    margin-top: 3px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+/* Empty state */
+.empty-state {
+    text-align: center;
+    color: #9ca3af;
+    padding: 80px 20px;
+}
+.empty-state .text { font-size: 0.87rem; }
+.empty-state .hint { font-size: 0.75rem; color: #d1d5db; margin-top: 5px; }
+
+/* Buttons */
+.stButton > button,
+.stDownloadButton > button {
+    background: #ffffff !important;
+    color: #1a3c5e !important;
+    border: 1.5px solid #1a3c5e !important;
+    border-radius: 6px !important;
+    font-weight: 500 !important;
+    font-family: 'Inter', sans-serif !important;
+    font-size: 0.84rem !important;
+    padding: 6px 16px !important;
+    transition: all 0.15s ease !important;
+    box-shadow: none !important;
+}
+.stButton > button:hover,
+.stDownloadButton > button:hover {
+    background: #1a3c5e !important;
+    color: #ffffff !important;
+}
+.stFormSubmitButton > button {
+    background: #1a3c5e !important;
+    color: #ffffff !important;
+    border: none !important;
+    border-radius: 6px !important;
+    font-size: 1.2rem !important;
+    font-weight: 400 !important;
+    padding: 0 !important;
+    width: 100% !important;
+    min-height: 38px !important;
+    line-height: 38px !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+}
+.stFormSubmitButton > button:hover {
+    background: #14304e !important;
+}
+section[data-testid="stSidebar"] .stButton > button {
+    background: #1a3c5e !important;
+    color: #ffffff !important;
+    border: none !important;
+    width: 100% !important;
+}
+section[data-testid="stSidebar"] .stButton > button:hover {
+    background: #14304e !important;
+}
+section[data-testid="stSidebar"] .stDownloadButton > button {
+    background: #ffffff !important;
+    color: #1a3c5e !important;
+    border: 1.5px solid #1a3c5e !important;
+    width: 100% !important;
+}
+section[data-testid="stSidebar"] .stDownloadButton > button:hover {
+    background: #1a3c5e !important;
+    color: #ffffff !important;
+}
+
+/* Text inputs */
+div[data-baseweb="input"] input,
+.stTextInput input {
+    background: #ffffff !important;
+    border: 1px solid #d1d5db !important;
+    border-radius: 6px !important;
+    color: #111827 !important;
+    font-family: 'Inter', sans-serif !important;
+    font-size: 0.88rem !important;
+}
+div[data-baseweb="input"] input::placeholder {
+    color: #9ca3af !important;
+}
+div[data-baseweb="input"] input:focus {
+    border-color: #1a3c5e !important;
+    box-shadow: 0 0 0 2px rgba(26,60,94,0.1) !important;
+}
+div[data-baseweb="select"] {
+    background: #ffffff !important;
+}
+div[data-baseweb="select"] > div {
+    background: #ffffff !important;
+    border: 1px solid #d1d5db !important;
+    border-radius: 6px !important;
+    color: #111827 !important;
+    min-height: 38px !important;
+}
+div[data-baseweb="select"] > div > div {
+    color: #111827 !important;
+}
+div[data-baseweb="select"] span {
+    color: #111827 !important;
+}
+div[data-baseweb="select"] svg {
+    fill: #374151 !important;
+}
+ul[data-baseweb="menu"] li {
+    background: #ffffff !important;
+    color: #111827 !important;
+}
+ul[data-baseweb="menu"] li:hover,
+ul[data-baseweb="menu"] li[aria-selected="true"] {
+    background: #eff6ff !important;
+    color: #1d4ed8 !important;
+}
+.stTextInput label,
+.stSelectbox label {
+    color: #374151 !important;
+    font-size: 0.78rem !important;
+    font-weight: 500 !important;
+}
+details {
+    background: #f9fafb !important;
+    border: 1px solid #e5e7eb !important;
+    border-radius: 6px !important;
+    padding: 2px 8px !important;
+}
+details summary {
+    color: #1a3c5e !important;
+    font-size: 0.8rem !important;
+    font-weight: 500 !important;
+}
+::-webkit-scrollbar { width: 4px; }
+::-webkit-scrollbar-track { background: #f5f7fa; }
+::-webkit-scrollbar-thumb { background: #d1d5db; border-radius: 3px; }
+
+/* Hide only the main menu and footer – keep header for sidebar toggle */
+#MainMenu { visibility: hidden; }
+footer { visibility: hidden; }
+
+/* Ensure main content fills width */
+.main .block-container {
+    max-width: 100% !important;
+    padding: 0 !important;
+}
+section.main {
+    max-width: 100% !important;
+}
 </style>
 """, unsafe_allow_html=True)
 
@@ -41,26 +402,8 @@ st.markdown("""
 def get_local_storage_key():
     return "customer_query_analyzer_chat_history"
 
-def load_chat_history_from_local_storage():
-    """Use JavaScript to read chat history from local storage and store it in session state."""
-    js_code = f"""
-    <script>
-    const history = localStorage.getItem('{get_local_storage_key()}');
-    if (history) {{
-        const data = JSON.parse(history);
-        const textarea = parent.document.getElementById('history_storage');
-        if (textarea) {{
-            textarea.value = JSON.stringify(data);
-            textarea.dispatchEvent(new Event('input', {{ bubbles: true }}));
-        }}
-    }}
-    </script>
-    """
-    st.markdown(js_code, unsafe_allow_html=True)
-
 def save_chat_history_to_local_storage():
     """Save current chat history to local storage using JavaScript."""
-    # We'll store messages and conv_history separately
     data = {
         "messages": st.session_state.messages,
         "conv_history": st.session_state.conv_history,
@@ -72,7 +415,6 @@ def save_chat_history_to_local_storage():
         "intent_freq": st.session_state.intent_freq,
         "latencies": st.session_state.latencies,
     }
-    # This JavaScript will be executed after the page is rendered
     js_code = f"""
     <script>
     const data = {json.dumps(data)};
@@ -118,18 +460,16 @@ for k, v in _defaults.items():
 # ============================================================
 # Load history from local storage (if any) at startup
 # ============================================================
-# We'll use a hidden text input to receive data from JavaScript
 if "history_loaded" not in st.session_state:
     st.session_state.history_loaded = False
 
 if not st.session_state.history_loaded:
-    # Create a hidden text input that will receive the history data
+    # Create a hidden text area that will receive the history data
     history_data = st.text_area(
         label="history_storage",
         key="history_storage",
         value="",
         label_visibility="collapsed",
-        height=0,
         help="Internal storage for chat history",
     )
     st.markdown(
@@ -194,7 +534,7 @@ MODELS = {
 HF_REPO_ID = "YamiChowdary/customer-query-analyzer-bert"
 
 # ============================================================
-# SAFETY NET (unchanged)
+# SAFETY NET
 # ============================================================
 SAFETY_PATTERNS = {
     "unauthorized_access": [
@@ -231,7 +571,7 @@ def pre_classify(query: str):
     return None, None
 
 # ============================================================
-# BERT MODEL (unchanged)
+# BERT MODEL
 # ============================================================
 class MultiTaskBERT(nn.Module):
     def __init__(self, bert_name, num_intents, num_sentiments, dropout=0.3):
@@ -687,7 +1027,6 @@ with col_chat:
                     st.session_state.messages[last_idx]["feedback"] = "up"
                     if st.session_state.history_log:
                         st.session_state.history_log[-1]["Feedback"] = "Yes"
-                    # Save to local storage after change
                     save_chat_history_to_local_storage()
                     st.rerun()
             with fb2:
@@ -790,7 +1129,6 @@ with col_chat:
                 "Latency": f"{latency}ms",
                 "Feedback": "",
             })
-            # Save to local storage after updating chat
             save_chat_history_to_local_storage()
             st.rerun()
 
