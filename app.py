@@ -399,7 +399,7 @@ for k, v in _defaults.items():
 SENTIMENT_NAMES = ["negative", "neutral", "positive"]
 SENTIMENT_LABEL = {"negative": "Negative", "neutral": "Neutral", "positive": "Positive"}
 LOW_CONF        = 0.20
-GROQ_MODEL      = "llama-3.1-8b-instant"
+GROQ_MODEL      = "llama3-8b-8192"          # stable Groq model ID
 HF_REPO_ID      = "YamiChowdary/customer-query-analyzer-bert"
 
 # ============================================================
@@ -534,54 +534,77 @@ def classify(query, mdl, tok, id2intent, oos_id, device):
 # ============================================================
 # PROMPT BUILDER
 # ============================================================
-def build_conversation_context(history):
-    if not history:
-        return ""
-    ctx = "\n--- Previous Conversation ---\n"
-    for turn in history:
-        role = "Customer" if turn["role"] == "user" else "Assistant"
-        ctx += f"{role}: {turn['content']}\n"
-    ctx += "--- End of Previous Conversation ---\n\n"
-    return ctx
+MAX_HISTORY_TURNS = 6   # keep last 3 exchanges (6 messages) to stay within token limits
 
-def build_prompt(query, intent, sentiment, confidence, history=None):
-    conv_ctx = build_conversation_context(history)
+def build_system_prompt(intent, sentiment):
     ir   = intent.replace("_", " ")
     tone = {
-        "negative": "User is frustrated. Be empathetic, calm and solution-focused.",
-        "neutral" : "User is making a calm request. Be clear and concise.",
-        "positive": "User is happy. Match their energy warmly.",
+        "negative": "The user seems frustrated. Be empathetic, calm, and solution-focused.",
+        "neutral" : "The user is making a calm request. Be clear and concise.",
+        "positive": "The user is in a positive mood. Be warm and match their energy.",
     }.get(sentiment, "Be helpful and polite.")
     return (
-        f"You are a helpful and friendly AI assistant.\n\n"
-        f"{conv_ctx}"
-        f"User's latest message: \"{query}\"\n"
-        f"Detected topic: {ir}\n\n"
-        f"Tone guidance: {tone}\n\n"
-        f"Use the conversation history above to give a contextually aware response. "
-        f"Be natural, helpful and conversational. "
-        f"Do not mention intent names, confidence scores or system labels.\n"
+        f"You are a friendly and professional customer support AI assistant. "
+        f"The user's current topic is: {ir}. "
+        f"{tone} "
+        f"Keep replies concise (2–4 sentences). "
+        f"Never mention intent names, confidence scores, or any system labels."
     )
+
+def build_messages(query, intent, sentiment, history=None):
+    """Return a well-formed messages list for the Groq chat API."""
+    system_msg = {"role": "system", "content": build_system_prompt(intent, sentiment)}
+
+    # Trim history to last MAX_HISTORY_TURNS messages to avoid token overflow
+    trimmed = (history or [])[-MAX_HISTORY_TURNS:]
+
+    # Convert stored history roles to API roles (model → assistant)
+    api_history = []
+    for turn in trimmed:
+        role = "assistant" if turn["role"] == "model" else "user"
+        content = str(turn.get("content", "")).strip()
+        if content:
+            api_history.append({"role": role, "content": content})
+
+    # Current user message
+    api_history.append({"role": "user", "content": query.strip()})
+
+    return [system_msg] + api_history
 
 # ============================================================
 # AI RESPONSE — Groq
 # ============================================================
 def get_ai_response(query, intent, sentiment, confidence, api_key, history=None):
-    prompt = build_prompt(query, intent, sentiment, confidence, history)
+    messages = build_messages(query, intent, sentiment, history)
     try:
         r = requests.post(
             "https://api.groq.com/openai/v1/chat/completions",
-            headers={"Authorization": f"Bearer {api_key}", "Content-Type": "application/json"},
-            json={"model": GROQ_MODEL,
-                  "messages": [{"role": "user", "content": prompt}],
-                  "max_tokens": 250, "temperature": 0.7},
-            timeout=30
+            headers={
+                "Authorization": f"Bearer {api_key.strip()}",
+                "Content-Type": "application/json",
+            },
+            json={
+                "model"      : GROQ_MODEL,
+                "messages"   : messages,
+                "max_tokens" : 300,
+                "temperature": 0.7,
+            },
+            timeout=30,
         )
         if r.status_code == 200:
             return r.json()["choices"][0]["message"]["content"].strip()
-        return f"API Error {r.status_code} — check your key."
+
+        # Surface the real Groq error so it's easy to diagnose
+        try:
+            err_detail = r.json().get("error", {}).get("message", r.text[:200])
+        except Exception:
+            err_detail = r.text[:200]
+        return f"⚠ Groq API error {r.status_code}: {err_detail}"
+
+    except requests.exceptions.Timeout:
+        return "⚠ Request timed out — Groq took too long to respond. Please try again."
     except Exception as e:
-        return f"Connection error: {str(e)[:80]}"
+        return f"⚠ Connection error: {str(e)[:120]}"
 
 def latency_stats():
     lats = st.session_state.latencies
