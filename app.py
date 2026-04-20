@@ -399,8 +399,16 @@ for k, v in _defaults.items():
 SENTIMENT_NAMES = ["negative", "neutral", "positive"]
 SENTIMENT_LABEL = {"negative": "Negative", "neutral": "Neutral", "positive": "Positive"}
 LOW_CONF        = 0.20
-GROQ_MODEL      = "llama3-8b-8192"          # stable Groq model ID
 HF_REPO_ID      = "YamiChowdary/customer-query-analyzer-bert"
+
+# Groq models tried in order — first one that works wins
+GROQ_MODELS = [
+    "llama3-8b-8192",
+    "llama-3.1-8b-instant",
+    "llama-3.3-70b-versatile",
+    "mixtral-8x7b-32768",
+    "gemma2-9b-it",
+]
 
 # ============================================================
 # SAFETY NET
@@ -572,10 +580,10 @@ def build_messages(query, intent, sentiment, history=None):
     return [system_msg] + api_history
 
 # ============================================================
-# AI RESPONSE — Groq
+# AI RESPONSE — Groq  (auto model fallback)
 # ============================================================
-def get_ai_response(query, intent, sentiment, confidence, api_key, history=None):
-    messages = build_messages(query, intent, sentiment, history)
+def _groq_post(api_key: str, model: str, messages: list, max_tokens: int = 300):
+    """Single Groq POST. Returns (response_text | None, error_str | None)."""
     try:
         r = requests.post(
             "https://api.groq.com/openai/v1/chat/completions",
@@ -583,28 +591,49 @@ def get_ai_response(query, intent, sentiment, confidence, api_key, history=None)
                 "Authorization": f"Bearer {api_key.strip()}",
                 "Content-Type": "application/json",
             },
-            json={
-                "model"      : GROQ_MODEL,
-                "messages"   : messages,
-                "max_tokens" : 300,
-                "temperature": 0.7,
-            },
+            json={"model": model, "messages": messages,
+                  "max_tokens": max_tokens, "temperature": 0.7},
             timeout=30,
         )
         if r.status_code == 200:
-            return r.json()["choices"][0]["message"]["content"].strip()
-
-        # Surface the real Groq error so it's easy to diagnose
+            return r.json()["choices"][0]["message"]["content"].strip(), None
         try:
-            err_detail = r.json().get("error", {}).get("message", r.text[:200])
+            err = r.json().get("error", {}).get("message", r.text[:300])
         except Exception:
-            err_detail = r.text[:200]
-        return f"⚠ Groq API error {r.status_code}: {err_detail}"
-
+            err = r.text[:300]
+        return None, f"HTTP {r.status_code}: {err}"
     except requests.exceptions.Timeout:
-        return "⚠ Request timed out — Groq took too long to respond. Please try again."
+        return None, "Request timed out"
     except Exception as e:
-        return f"⚠ Connection error: {str(e)[:120]}"
+        return None, str(e)[:200]
+
+
+def get_ai_response(query, intent, sentiment, confidence, api_key, history=None):
+    messages   = build_messages(query, intent, sentiment, history)
+    last_error = "No models available"
+
+    for model in GROQ_MODELS:
+        text, err = _groq_post(api_key, model, messages)
+        if text is not None:
+            # Remember the working model so future calls skip the loop
+            st.session_state["groq_model_ok"] = model
+            return text
+        last_error = f"{model} → {err}"
+        # Auth failure (401) — no point trying other models
+        if "401" in last_error or "invalid_api_key" in last_error.lower():
+            return f"⚠ Invalid API key. Check the key pasted in the sidebar.\n\nDetail: {err}"
+
+    return f"⚠ All Groq models failed. Last error:\n{last_error}"
+
+
+def test_groq_connection(api_key: str):
+    """Quick smoke-test — returns (success, model_used, detail)."""
+    msgs = [{"role": "user", "content": "Reply with exactly: OK"}]
+    for model in GROQ_MODELS:
+        text, err = _groq_post(api_key, model, msgs, max_tokens=10)
+        if text is not None:
+            return True, model, text
+    return False, None, err
 
 def latency_stats():
     lats = st.session_state.latencies
@@ -655,6 +684,28 @@ with st.sidebar:
         unsafe_allow_html=True
     )
     st.session_state.api_key = api_key
+
+    # ── Test Connection button ──────────────────────────────
+    if api_key:
+        if st.button("▶ Test Connection", use_container_width=True, key="test_conn"):
+            with st.spinner("Testing Groq API..."):
+                ok, model_used, detail = test_groq_connection(api_key)
+            if ok:
+                st.markdown(
+                    f"<div style='background:#001A00;border:1px solid #005500;border-radius:6px;"
+                    f"padding:8px 10px;font-family:Roboto Mono,monospace;font-size:0.68rem;color:#55FF55;"
+                    f"margin-bottom:6px;'>✓ CONNECTED<br>"
+                    f"<span style='color:#AAAAAA;'>Model: {model_used}</span></div>",
+                    unsafe_allow_html=True
+                )
+            else:
+                st.markdown(
+                    f"<div style='background:#1A0000;border:1px solid #550000;border-radius:6px;"
+                    f"padding:8px 10px;font-family:Roboto Mono,monospace;font-size:0.67rem;color:#FF5555;"
+                    f"margin-bottom:6px;'>✕ FAILED<br>"
+                    f"<span style='color:#AA4444;word-break:break-all;'>{detail}</span></div>",
+                    unsafe_allow_html=True
+                )
 
     st.markdown("<div style='height:1px;background:#2A2A2A;margin:10px 0;'></div>", unsafe_allow_html=True)
     st.markdown("<div class='sb-sec'>▸ SESSION STATS</div>", unsafe_allow_html=True)
