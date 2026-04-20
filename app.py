@@ -646,15 +646,8 @@ def latency_stats():
 with st.sidebar:
     st.markdown("""
     <div style='padding:6px 0 14px 0; border-bottom:1px solid #3F3F3F; margin-bottom:2px;'>
-        <div style='display:flex;align-items:center;gap:8px;'>
-            <div style='background:#FF0000;width:28px;height:20px;border-radius:4px;display:flex;align-items:center;justify-content:center;flex-shrink:0;'>
-                <span style='color:#fff;font-size:0.7rem;'>▶</span>
-            </div>
-            <div>
-                <div style='font-size:0.95rem;font-weight:700;color:#F1F1F1;font-family:Oswald,sans-serif;letter-spacing:0.5px;'>QUERY ANALYZER</div>
-                <div style='font-size:0.62rem;color:#717171;margin-top:1px;font-family:Roboto Mono,monospace;'>BERT + GROQ ENGINE</div>
-            </div>
-        </div>
+        <div style='font-size:0.95rem;font-weight:700;color:#F1F1F1;font-family:Oswald,sans-serif;letter-spacing:0.5px;'>QUERY ANALYZER</div>
+        <div style='font-size:0.62rem;color:#717171;margin-top:2px;font-family:Roboto Mono,monospace;'>BERT + GROQ ENGINE</div>
     </div>
     """, unsafe_allow_html=True)
 
