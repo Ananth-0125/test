@@ -1,5 +1,5 @@
 """
-Customer Query Analyzer — Streamlit App  (YouTube Theme)
+Customer Query Analyzer — Streamlit App  (Blue / Yellow Theme)
 Run: streamlit run app.py
 """
 
@@ -26,32 +26,40 @@ st.set_page_config(
 
 st.markdown("""
 <style>
-@import url('https://fonts.googleapis.com/css2?family=YouTube+Sans:wght@300;400;500;600;700&family=Roboto+Mono:wght@400;500&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Oswald:wght@400;500;600;700&family=Roboto+Mono:wght@400;500&display=swap');
 
 :root {
-    --yt-red:        #FF0000;
-    --yt-red-dark:   #CC0000;
-    --yt-red-dim:    rgba(255,0,0,0.12);
-    --yt-bg:         #0F0F0F;
-    --yt-surface:    #1A1A1A;
-    --yt-surface2:   #212121;
-    --yt-surface3:   #272727;
-    --yt-border:     #3F3F3F;
-    --yt-border-dim: #2A2A2A;
-    --yt-text:       #F1F1F1;
-    --yt-text-dim:   #AAAAAA;
-    --yt-text-mute:  #717171;
-    --yt-white:      #FFFFFF;
+    --primary:       #0058A3;
+    --primary-dark:  #004080;
+    --primary-dim:   rgba(0,88,163,0.10);
+    --accent:        #FFDA1A;
+    --accent-dark:   #E5C500;
+    --accent-dim:    rgba(255,218,26,0.15);
+    --bg:            #F5F5F5;
+    --surface:       #FFFFFF;
+    --surface2:      #EEF3FA;
+    --surface3:      #E4EDF7;
+    --border:        #C0CDD8;
+    --border-dim:    #D8E3EC;
+    --text:          #333333;
+    --text-dim:      #666677;
+    --text-mute:     #99A0AA;
+    --white:         #FFFFFF;
+    --danger:        #CC2200;
+    --danger-dim:    rgba(204,34,0,0.10);
+    --success:       #1A7A2A;
+    --success-dim:   rgba(26,122,42,0.10);
+    --warn:          #A06000;
+    --warn-dim:      rgba(160,96,0,0.10);
 }
 
 html, body, [class*="css"] {
     font-family: 'Oswald', 'Roboto', sans-serif !important;
-    color: var(--yt-text) !important;
+    color: var(--text) !important;
 }
 
 .stApp {
-    background: var(--yt-bg) !important;
+    background: var(--bg) !important;
 }
 
 .block-container {
@@ -64,28 +72,28 @@ html, body, [class*="css"] {
 
 /* ── Sidebar ── */
 [data-testid="stSidebar"] {
-    background: var(--yt-surface) !important;
-    border-right: 1px solid var(--yt-border) !important;
+    background: var(--surface) !important;
+    border-right: 1px solid var(--border) !important;
 }
 [data-testid="stSidebar"] .block-container { padding: 1.2rem 1rem !important; }
 [data-testid="stSidebarCollapseButton"] {
-    background: var(--yt-red) !important;
+    background: var(--primary) !important;
     border-radius: 0 6px 6px 0 !important;
 }
-[data-testid="stSidebarCollapseButton"]:hover { background: var(--yt-red-dark) !important; }
+[data-testid="stSidebarCollapseButton"]:hover { background: var(--primary-dark) !important; }
 [data-testid="stSidebarCollapseButton"] svg { fill: #ffffff !important; }
 [data-testid="collapsedControl"] {
-    background: var(--yt-red) !important;
+    background: var(--primary) !important;
     border-radius: 0 6px 6px 0 !important;
 }
-[data-testid="collapsedControl"]:hover { background: var(--yt-red-dark) !important; }
+[data-testid="collapsedControl"]:hover { background: var(--primary-dark) !important; }
 [data-testid="collapsedControl"] svg { fill: #ffffff !important; }
 
 /* ── Page Header ── */
 .page-header {
-    background: linear-gradient(135deg, #1A1A1A 0%, #0F0F0F 60%, #1A0000 100%);
-    border: 1px solid var(--yt-border);
-    border-left: 4px solid var(--yt-red);
+    background: linear-gradient(135deg, #E8F0FA 0%, #FFFFFF 60%, #FFFBF0 100%);
+    border: 1px solid var(--border);
+    border-left: 4px solid var(--primary);
     border-radius: 10px;
     padding: 20px 24px;
     margin-bottom: 18px;
@@ -99,7 +107,7 @@ html, body, [class*="css"] {
     top: 50%;
     transform: translateY(-50%);
     font-size: 6rem;
-    color: rgba(255,0,0,0.06);
+    color: rgba(0,88,163,0.06);
     pointer-events: none;
     line-height: 1;
 }
@@ -107,23 +115,23 @@ html, body, [class*="css"] {
     font-size: 1.6rem;
     font-weight: 700;
     margin: 0 0 5px 0;
-    color: var(--yt-white);
+    color: var(--text);
     letter-spacing: -0.3px;
     font-family: 'Oswald', sans-serif !important;
 }
 .page-header p {
     margin: 0;
     font-size: 0.78rem;
-    color: var(--yt-text-dim);
+    color: var(--text-dim);
     font-family: 'Roboto Mono', monospace !important;
     font-weight: 400;
 }
 .header-tags { margin-bottom: 10px; }
 .htag {
     display: inline-block;
-    background: var(--yt-red-dim);
-    border: 1px solid rgba(255,0,0,0.3);
-    color: #FF6666;
+    background: var(--accent-dim);
+    border: 1px solid rgba(255,218,26,0.5);
+    color: #7A5800;
     padding: 2px 10px;
     border-radius: 2px;
     font-size: 0.62rem;
@@ -139,10 +147,10 @@ html, body, [class*="css"] {
     font-weight: 600;
     text-transform: uppercase;
     letter-spacing: 2px;
-    color: var(--yt-text-mute);
+    color: var(--text-mute);
     margin-bottom: 10px;
     padding-bottom: 6px;
-    border-bottom: 1px solid var(--yt-border-dim);
+    border-bottom: 1px solid var(--border-dim);
     font-family: 'Roboto Mono', monospace !important;
 }
 .sb-sec {
@@ -150,20 +158,15 @@ html, body, [class*="css"] {
     font-weight: 600;
     text-transform: uppercase;
     letter-spacing: 1.5px;
-    color: var(--yt-text-mute);
+    color: var(--text-mute);
     margin: 14px 0 6px 0;
     font-family: 'Roboto Mono', monospace !important;
 }
 
-/* ── Stat rows in sidebar ── */
-[data-testid="stSidebar"] div[style*="display:flex"] span:last-child {
-    color: var(--yt-text) !important;
-}
-
 /* ── Chat Window ── */
 .chat-window {
-    background: var(--yt-surface);
-    border: 1px solid var(--yt-border);
+    background: var(--surface);
+    border: 1px solid var(--border);
     border-radius: 8px;
     padding: 14px 16px;
     height: 400px;
@@ -181,28 +184,28 @@ html, body, [class*="css"] {
     font-weight: 400;
 }
 .bubble-user {
-    background: var(--yt-red);
+    background: var(--primary);
     color: #ffffff;
     border-radius: 14px 14px 3px 14px;
     float: right;
 }
 .bubble-bot {
-    background: var(--yt-surface2);
-    border: 1px solid var(--yt-border);
-    color: var(--yt-text);
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    color: var(--text);
     border-radius: 14px 14px 14px 3px;
     float: left;
 }
 .bubble-security {
-    background: #1A0000;
-    border: 1px solid #660000;
-    color: #FF9999;
+    background: #FFF0EE;
+    border: 1px solid #FFBBAA;
+    color: #8B1500;
     border-radius: 14px 14px 14px 3px;
     float: left;
 }
 .msg-meta {
     font-size: 0.63rem;
-    color: var(--yt-text-mute);
+    color: var(--text-mute);
     margin-bottom: 6px;
     font-family: 'Roboto Mono', monospace !important;
     display: flex;
@@ -226,25 +229,25 @@ html, body, [class*="css"] {
     text-transform: uppercase;
     letter-spacing: 0.5px;
 }
-.t-intent  { background: rgba(255,0,0,0.15); color: #FF6666; border: 1px solid rgba(255,0,0,0.3); }
-.t-neg     { background: #1A0000; color: #FF5555; border: 1px solid #550000; }
-.t-neu     { background: var(--yt-surface3); color: var(--yt-text-dim); border: 1px solid var(--yt-border); }
-.t-pos     { background: #001A00; color: #55FF55; border: 1px solid #005500; }
-.t-sec     { background: var(--yt-red); color: #ffffff; border: 1px solid var(--yt-red-dark); font-weight: 700; }
-.t-low     { background: #1A1000; color: #FFAA33; border: 1px solid #554400; }
-.t-good    { background: #001A00; color: #55FF55; border: 1px solid #005500; }
-.t-bad     { background: #1A0000; color: #FF5555; border: 1px solid #550000; }
+.t-intent  { background: var(--primary-dim); color: var(--primary); border: 1px solid rgba(0,88,163,0.3); }
+.t-neg     { background: #FEE8E8; color: #CC2200; border: 1px solid #FFBBAA; }
+.t-neu     { background: var(--surface3); color: var(--text-dim); border: 1px solid var(--border); }
+.t-pos     { background: #E8FEEE; color: #1A7A2A; border: 1px solid #AAFFBB; }
+.t-sec     { background: #CC2200; color: #ffffff; border: 1px solid #AA1800; font-weight: 700; }
+.t-low     { background: #FFF8E0; color: #A06000; border: 1px solid #FFD080; }
+.t-good    { background: #E8FEEE; color: #1A7A2A; border: 1px solid #AAFFBB; }
+.t-bad     { background: #FEE8E8; color: #CC2200; border: 1px solid #FFBBAA; }
 
 /* ── Progress Bars ── */
-.bar-track { background: var(--yt-surface3); border-radius: 2px; height: 5px; margin: 3px 0 9px 0; overflow: hidden; }
-.bar-blue  { background: var(--yt-red); height: 5px; border-radius: 2px; }
-.bar-red   { background: #FF4444; height: 5px; border-radius: 2px; }
+.bar-track { background: var(--surface3); border-radius: 2px; height: 5px; margin: 3px 0 9px 0; overflow: hidden; }
+.bar-blue  { background: var(--primary); height: 5px; border-radius: 2px; }
+.bar-red   { background: #CC2200; height: 5px; border-radius: 2px; }
 
 /* ── Metric Tiles ── */
 .metric-tile {
-    background: var(--yt-surface);
-    border: 1px solid var(--yt-border);
-    border-top: 2px solid var(--yt-red);
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-top: 2px solid var(--primary);
     border-radius: 6px;
     padding: 12px 10px;
     text-align: center;
@@ -252,13 +255,13 @@ html, body, [class*="css"] {
 .metric-tile .val {
     font-size: 1.3rem;
     font-weight: 700;
-    color: var(--yt-white);
+    color: var(--text);
     font-family: 'Oswald', sans-serif !important;
     line-height: 1.1;
 }
 .metric-tile .lbl {
     font-size: 0.6rem;
-    color: var(--yt-text-mute);
+    color: var(--text-mute);
     margin-top: 4px;
     text-transform: uppercase;
     letter-spacing: 1.5px;
@@ -266,15 +269,15 @@ html, body, [class*="css"] {
 }
 
 /* ── Empty State ── */
-.empty-state { text-align: center; color: var(--yt-text-mute); padding: 80px 20px; }
-.empty-state .text { font-size: 0.87rem; color: var(--yt-text-dim); }
-.empty-state .hint { font-size: 0.75rem; color: var(--yt-text-mute); margin-top: 5px; }
+.empty-state { text-align: center; color: var(--text-mute); padding: 80px 20px; }
+.empty-state .text { font-size: 0.87rem; color: var(--text-dim); }
+.empty-state .hint { font-size: 0.75rem; color: var(--text-mute); margin-top: 5px; }
 
 /* ── Buttons ── */
 .stButton > button, .stDownloadButton > button {
-    background: var(--yt-surface2) !important;
-    color: var(--yt-text) !important;
-    border: 1px solid var(--yt-border) !important;
+    background: var(--surface2) !important;
+    color: var(--text) !important;
+    border: 1px solid var(--border) !important;
     border-radius: 4px !important;
     font-weight: 500 !important;
     font-family: 'Roboto Mono', monospace !important;
@@ -286,17 +289,17 @@ html, body, [class*="css"] {
     letter-spacing: 0.5px;
 }
 .stButton > button:hover, .stDownloadButton > button:hover {
-    background: var(--yt-red) !important;
+    background: var(--primary) !important;
     color: #ffffff !important;
-    border-color: var(--yt-red) !important;
+    border-color: var(--primary) !important;
 }
 .stFormSubmitButton > button {
-    background: var(--yt-red) !important;
-    color: #ffffff !important;
+    background: var(--accent) !important;
+    color: #333333 !important;
     border: none !important;
     border-radius: 4px !important;
     font-size: 1.2rem !important;
-    font-weight: 400 !important;
+    font-weight: 700 !important;
     padding: 0 !important;
     width: 100% !important;
     min-height: 38px !important;
@@ -305,55 +308,55 @@ html, body, [class*="css"] {
     align-items: center !important;
     justify-content: center !important;
 }
-.stFormSubmitButton > button:hover { background: var(--yt-red-dark) !important; }
+.stFormSubmitButton > button:hover { background: var(--accent-dark) !important; }
 
 section[data-testid="stSidebar"] .stButton > button {
-    background: var(--yt-red) !important;
+    background: var(--primary) !important;
     color: #ffffff !important;
     border: none !important;
     width: 100% !important;
 }
 section[data-testid="stSidebar"] .stButton > button:hover {
-    background: var(--yt-red-dark) !important;
+    background: var(--primary-dark) !important;
 }
 section[data-testid="stSidebar"] .stDownloadButton > button {
-    background: var(--yt-surface2) !important;
-    color: var(--yt-text) !important;
-    border: 1px solid var(--yt-border) !important;
+    background: var(--surface2) !important;
+    color: var(--text) !important;
+    border: 1px solid var(--border) !important;
     width: 100% !important;
 }
 section[data-testid="stSidebar"] .stDownloadButton > button:hover {
-    background: var(--yt-red) !important;
+    background: var(--primary) !important;
     color: #ffffff !important;
 }
 
 /* ── Inputs ── */
 div[data-baseweb="input"] input, .stTextInput input {
-    background: var(--yt-surface2) !important;
-    border: 1px solid var(--yt-border) !important;
+    background: var(--surface) !important;
+    border: 1px solid var(--border) !important;
     border-radius: 4px !important;
-    color: var(--yt-text) !important;
+    color: var(--text) !important;
     font-family: 'Roboto Mono', monospace !important;
     font-size: 0.88rem !important;
 }
-div[data-baseweb="input"] input::placeholder { color: var(--yt-text-mute) !important; }
+div[data-baseweb="input"] input::placeholder { color: var(--text-mute) !important; }
 div[data-baseweb="input"] input:focus {
-    border-color: var(--yt-red) !important;
-    box-shadow: 0 0 0 2px rgba(255,0,0,0.15) !important;
+    border-color: var(--primary) !important;
+    box-shadow: 0 0 0 2px rgba(0,88,163,0.15) !important;
 }
 
 /* ── Dataframe ── */
 [data-testid="stDataFrameResizable"] {
-    background: var(--yt-surface) !important;
-    border: 1px solid var(--yt-border) !important;
+    background: var(--surface) !important;
+    border: 1px solid var(--border) !important;
     border-radius: 6px !important;
 }
 
 /* ── Scrollbar ── */
 ::-webkit-scrollbar { width: 4px; }
-::-webkit-scrollbar-track { background: var(--yt-bg); }
-::-webkit-scrollbar-thumb { background: var(--yt-border); border-radius: 2px; }
-::-webkit-scrollbar-thumb:hover { background: var(--yt-red); }
+::-webkit-scrollbar-track { background: var(--bg); }
+::-webkit-scrollbar-thumb { background: var(--border); border-radius: 2px; }
+::-webkit-scrollbar-thumb:hover { background: var(--primary); }
 
 /* ── Misc ── */
 #MainMenu { visibility: hidden; }
@@ -362,10 +365,10 @@ footer { visibility: hidden; }
 section.main { max-width: 100% !important; }
 
 /* ── Spinner / info / success ── */
-.stSpinner > div { border-top-color: var(--yt-red) !important; }
-.stSuccess { background: #001A00 !important; color: #55FF55 !important; border: 1px solid #005500 !important; }
-.stWarning { background: #1A1000 !important; color: #FFAA33 !important; border: 1px solid #554400 !important; }
-.stError   { background: #1A0000 !important; color: #FF5555 !important; border: 1px solid #550000 !important; }
+.stSpinner > div { border-top-color: var(--primary) !important; }
+.stSuccess { background: #E8FEEE !important; color: #1A7A2A !important; border: 1px solid #AAFFBB !important; }
+.stWarning { background: #FFF8E0 !important; color: #A06000 !important; border: 1px solid #FFD080 !important; }
+.stError   { background: #FEE8E8 !important; color: #CC2200 !important; border: 1px solid #FFBBAA !important; }
 </style>
 """, unsafe_allow_html=True)
 
@@ -401,7 +404,6 @@ SENTIMENT_LABEL = {"negative": "Negative", "neutral": "Neutral", "positive": "Po
 LOW_CONF        = 0.20
 HF_REPO_ID      = "YamiChowdary/customer-query-analyzer-bert"
 
-# Groq models tried in order — first one that works wins
 GROQ_MODELS = [
     "llama3-8b-8192",
     "llama-3.1-8b-instant",
@@ -542,7 +544,7 @@ def classify(query, mdl, tok, id2intent, oos_id, device):
 # ============================================================
 # PROMPT BUILDER
 # ============================================================
-MAX_HISTORY_TURNS = 6   # keep last 3 exchanges (6 messages) to stay within token limits
+MAX_HISTORY_TURNS = 6
 
 def build_system_prompt(intent, sentiment):
     ir   = intent.replace("_", " ")
@@ -560,30 +562,21 @@ def build_system_prompt(intent, sentiment):
     )
 
 def build_messages(query, intent, sentiment, history=None):
-    """Return a well-formed messages list for the Groq chat API."""
     system_msg = {"role": "system", "content": build_system_prompt(intent, sentiment)}
-
-    # Trim history to last MAX_HISTORY_TURNS messages to avoid token overflow
-    trimmed = (history or [])[-MAX_HISTORY_TURNS:]
-
-    # Convert stored history roles to API roles (model → assistant)
+    trimmed    = (history or [])[-MAX_HISTORY_TURNS:]
     api_history = []
     for turn in trimmed:
-        role = "assistant" if turn["role"] == "model" else "user"
+        role    = "assistant" if turn["role"] == "model" else "user"
         content = str(turn.get("content", "")).strip()
         if content:
             api_history.append({"role": role, "content": content})
-
-    # Current user message
     api_history.append({"role": "user", "content": query.strip()})
-
     return [system_msg] + api_history
 
 # ============================================================
 # AI RESPONSE — Groq  (auto model fallback)
 # ============================================================
 def _groq_post(api_key: str, model: str, messages: list, max_tokens: int = 300):
-    """Single Groq POST. Returns (response_text | None, error_str | None)."""
     try:
         r = requests.post(
             "https://api.groq.com/openai/v1/chat/completions",
@@ -611,23 +604,18 @@ def _groq_post(api_key: str, model: str, messages: list, max_tokens: int = 300):
 def get_ai_response(query, intent, sentiment, confidence, api_key, history=None):
     messages   = build_messages(query, intent, sentiment, history)
     last_error = "No models available"
-
     for model in GROQ_MODELS:
         text, err = _groq_post(api_key, model, messages)
         if text is not None:
-            # Remember the working model so future calls skip the loop
             st.session_state["groq_model_ok"] = model
             return text
         last_error = f"{model} → {err}"
-        # Auth failure (401) — no point trying other models
         if "401" in last_error or "invalid_api_key" in last_error.lower():
             return f"⚠ Invalid API key. Check the key pasted in the sidebar.\n\nDetail: {err}"
-
     return f"⚠ All Groq models failed. Last error:\n{last_error}"
 
 
 def test_groq_connection(api_key: str):
-    """Quick smoke-test — returns (success, model_used, detail)."""
     msgs = [{"role": "user", "content": "Reply with exactly: OK"}]
     for model in GROQ_MODELS:
         text, err = _groq_post(api_key, model, msgs, max_tokens=10)
@@ -645,9 +633,9 @@ def latency_stats():
 # ============================================================
 with st.sidebar:
     st.markdown("""
-    <div style='padding:6px 0 14px 0; border-bottom:1px solid #3F3F3F; margin-bottom:2px;'>
-        <div style='font-size:0.95rem;font-weight:700;color:#F1F1F1;font-family:Oswald,sans-serif;letter-spacing:0.5px;'>QUERY ANALYZER</div>
-        <div style='font-size:0.62rem;color:#717171;margin-top:2px;font-family:Roboto Mono,monospace;'>BERT + GROQ ENGINE</div>
+    <div style='padding:6px 0 14px 0; border-bottom:1px solid #C0CDD8; margin-bottom:2px;'>
+        <div style='font-size:0.95rem;font-weight:700;color:#333333;font-family:Oswald,sans-serif;letter-spacing:0.5px;'>QUERY ANALYZER</div>
+        <div style='font-size:0.62rem;color:#99A0AA;margin-top:2px;font-family:Roboto Mono,monospace;'>BERT + GROQ ENGINE</div>
     </div>
     """, unsafe_allow_html=True)
 
@@ -659,7 +647,7 @@ with st.sidebar:
     if _on_cloud:
         try:
             api_key = st.secrets["GROQ_API_KEY"]
-            st.markdown("<div style='font-size:0.69rem;color:#55FF55;margin-bottom:8px;font-family:Roboto Mono,monospace;'>✓ KEY LOADED FROM SECRETS</div>", unsafe_allow_html=True)
+            st.markdown("<div style='font-size:0.69rem;color:#1A7A2A;margin-bottom:8px;font-family:Roboto Mono,monospace;'>✓ KEY LOADED FROM SECRETS</div>", unsafe_allow_html=True)
         except Exception:
             api_key = ""
     if not api_key:
@@ -669,38 +657,37 @@ with st.sidebar:
         )
         if api_key:
             masked = api_key[:4] + "x" * min(len(api_key)-8, 10) + api_key[-4:] if len(api_key) > 8 else "x" * len(api_key)
-            st.markdown(f"<div style='font-size:0.69rem;color:#55FF55;margin:-2px 0 6px 0;font-family:Roboto Mono,monospace;'>✓ KEY SET: {masked}</div>", unsafe_allow_html=True)
+            st.markdown(f"<div style='font-size:0.69rem;color:#1A7A2A;margin:-2px 0 6px 0;font-family:Roboto Mono,monospace;'>✓ KEY SET: {masked}</div>", unsafe_allow_html=True)
 
     st.markdown(
-        "<div style='font-size:0.68rem;color:#717171;margin:4px 0 8px 0;font-family:Roboto Mono,monospace;'>"
-        "FREE · <a href='https://console.groq.com' style='color:#FF4444;text-decoration:none;'>CONSOLE.GROQ.COM</a></div>",
+        "<div style='font-size:0.68rem;color:#99A0AA;margin:4px 0 8px 0;font-family:Roboto Mono,monospace;'>"
+        "FREE · <a href='https://console.groq.com' style='color:#0058A3;text-decoration:none;'>CONSOLE.GROQ.COM</a></div>",
         unsafe_allow_html=True
     )
     st.session_state.api_key = api_key
 
-    # ── Test Connection button ──────────────────────────────
     if api_key:
         if st.button("▶ Test Connection", use_container_width=True, key="test_conn"):
             with st.spinner("Testing Groq API..."):
                 ok, model_used, detail = test_groq_connection(api_key)
             if ok:
                 st.markdown(
-                    f"<div style='background:#001A00;border:1px solid #005500;border-radius:6px;"
-                    f"padding:8px 10px;font-family:Roboto Mono,monospace;font-size:0.68rem;color:#55FF55;"
+                    f"<div style='background:#E8FEEE;border:1px solid #AAFFBB;border-radius:6px;"
+                    f"padding:8px 10px;font-family:Roboto Mono,monospace;font-size:0.68rem;color:#1A7A2A;"
                     f"margin-bottom:6px;'>✓ CONNECTED<br>"
-                    f"<span style='color:#AAAAAA;'>Model: {model_used}</span></div>",
+                    f"<span style='color:#666677;'>Model: {model_used}</span></div>",
                     unsafe_allow_html=True
                 )
             else:
                 st.markdown(
-                    f"<div style='background:#1A0000;border:1px solid #550000;border-radius:6px;"
-                    f"padding:8px 10px;font-family:Roboto Mono,monospace;font-size:0.67rem;color:#FF5555;"
+                    f"<div style='background:#FEE8E8;border:1px solid #FFBBAA;border-radius:6px;"
+                    f"padding:8px 10px;font-family:Roboto Mono,monospace;font-size:0.67rem;color:#CC2200;"
                     f"margin-bottom:6px;'>✕ FAILED<br>"
                     f"<span style='color:#AA4444;word-break:break-all;'>{detail}</span></div>",
                     unsafe_allow_html=True
                 )
 
-    st.markdown("<div style='height:1px;background:#2A2A2A;margin:10px 0;'></div>", unsafe_allow_html=True)
+    st.markdown("<div style='height:1px;background:#D8E3EC;margin:10px 0;'></div>", unsafe_allow_html=True)
     st.markdown("<div class='sb-sec'>▸ SESSION STATS</div>", unsafe_allow_html=True)
 
     total = st.session_state.total_queries
@@ -712,29 +699,29 @@ with st.sidebar:
     ls    = latency_stats()
 
     rows = [
-        ("TOTAL QUERIES",   str(total), "#FF0000"),
-        ("NEGATIVE",        str(neg),   "#FF5555"),
-        ("NEUTRAL",         str(neu),   "#AAAAAA"),
-        ("POSITIVE",        str(pos),   "#55FF55"),
-        ("SECURITY ALERTS", str(sec),   "#FF0000"),
-        ("LOW CONFIDENCE",  str(low),   "#FFAA33"),
+        ("TOTAL QUERIES",   str(total), "#0058A3"),
+        ("NEGATIVE",        str(neg),   "#CC2200"),
+        ("NEUTRAL",         str(neu),   "#666677"),
+        ("POSITIVE",        str(pos),   "#1A7A2A"),
+        ("SECURITY ALERTS", str(sec),   "#CC2200"),
+        ("LOW CONFIDENCE",  str(low),   "#A06000"),
     ]
     if ls:
         rows += [
-            ("AVG LATENCY", f"{ls['avg']} ms", "#FF0000"),
-            ("MIN LATENCY", f"{ls['min']} ms", "#55FF55"),
-            ("MAX LATENCY", f"{ls['max']} ms", "#FF5555"),
+            ("AVG LATENCY", f"{ls['avg']} ms", "#0058A3"),
+            ("MIN LATENCY", f"{ls['min']} ms", "#1A7A2A"),
+            ("MAX LATENCY", f"{ls['max']} ms", "#CC2200"),
         ]
     for label, val, color in rows:
         st.markdown(
             f"<div style='display:flex;justify-content:space-between;"
-            f"font-size:0.76rem;padding:4px 0;border-bottom:1px solid #1A1A1A;font-family:Roboto Mono,monospace;'>"
-            f"<span style='color:#717171;'>{label}</span>"
+            f"font-size:0.76rem;padding:4px 0;border-bottom:1px solid #EEF3FA;font-family:Roboto Mono,monospace;'>"
+            f"<span style='color:#99A0AA;'>{label}</span>"
             f"<span style='font-weight:700;color:{color};'>{val}</span>"
             f"</div>", unsafe_allow_html=True
         )
 
-    st.markdown("<div style='height:1px;background:#2A2A2A;margin:12px 0;'></div>", unsafe_allow_html=True)
+    st.markdown("<div style='height:1px;background:#D8E3EC;margin:12px 0;'></div>", unsafe_allow_html=True)
 
     if st.session_state.history_log:
         df_exp   = pd.DataFrame(st.session_state.history_log)
@@ -800,7 +787,7 @@ with col_chat:
         chat_html = """
         <div class="chat-window">
             <div class="empty-state">
-                <div style="font-size:2.5rem;margin-bottom:12px;opacity:0.3;">▶</div>
+                <div style="font-size:2.5rem;margin-bottom:12px;opacity:0.25;color:#0058A3;">▶</div>
                 <div class="text">Model loaded — start a conversation</div>
                 <div class="hint">
                     Try: "What is my account balance?" &nbsp;·&nbsp;
@@ -831,7 +818,7 @@ with col_chat:
                 tags = f'<span class="tag t-intent">{i_label}</span> <span class="tag {s_cls}">{SENTIMENT_LABEL.get(s, s).upper()}</span>'
                 if is_sec: tags += ' <span class="tag t-sec">⚠ SECURITY</span>'
                 if is_low: tags += ' <span class="tag t-low">~ LOW CONF</span>'
-                tags += f'{fb_tag} <span style="color:#3F3F3F;font-size:0.6rem;">{msg.get("time","")} · {msg.get("latency","")}</span>'
+                tags += f'{fb_tag} <span style="color:#C0CDD8;font-size:0.6rem;">{msg.get("time","")} · {msg.get("latency","")}</span>'
                 chat_html += (
                     f'<div class="{bubble}">{msg["content"]}</div>'
                     f'<div class="msg-meta">{tags}</div>'
@@ -857,7 +844,7 @@ with col_chat:
         while last_idx >= 0 and st.session_state.messages[last_idx]["role"] != "bot":
             last_idx -= 1
         if last_idx >= 0 and st.session_state.messages[last_idx].get("feedback", "") == "":
-            st.markdown("<div style='font-size:0.67rem;color:#717171;margin:2px 0 4px 2px;font-family:Roboto Mono,monospace;'>WAS THIS RESPONSE HELPFUL?</div>", unsafe_allow_html=True)
+            st.markdown("<div style='font-size:0.67rem;color:#99A0AA;margin:2px 0 4px 2px;font-family:Roboto Mono,monospace;'>WAS THIS RESPONSE HELPFUL?</div>", unsafe_allow_html=True)
             fb1, fb2, _ = st.columns([1, 1, 6])
             with fb1:
                 if st.button("▲ Yes", key="fb_up", use_container_width=True):
@@ -871,7 +858,7 @@ with col_chat:
                     st.rerun()
 
     # Quick examples
-    st.markdown("<div style='font-size:0.62rem;color:#717171;margin:8px 0 5px 0;font-family:Roboto Mono,monospace;letter-spacing:1px;'>▸ QUICK EXAMPLES</div>", unsafe_allow_html=True)
+    st.markdown("<div style='font-size:0.62rem;color:#99A0AA;margin:8px 0 5px 0;font-family:Roboto Mono,monospace;letter-spacing:1px;'>▸ QUICK EXAMPLES</div>", unsafe_allow_html=True)
     examples = [
         "What is my account balance?",
         "I lost my card, block it now",
@@ -961,31 +948,32 @@ with col_right:
             st.markdown(f'<div class="metric-tile"><div class="val" style="font-size:0.85rem;">{SENTIMENT_LABEL.get(r["sentiment"], r["sentiment"]).upper()}</div><div class="lbl">Sentiment</div></div>', unsafe_allow_html=True)
         with m3:
             fl = "SECURITY" if r["pre_classified"] else ("LOW CONF" if r["low_confidence"] else "NORMAL")
-            fv = "#FF0000" if r["pre_classified"] else ("#FFAA33" if r["low_confidence"] else "#55FF55")
+            fv = "#CC2200" if r["pre_classified"] else ("#A06000" if r["low_confidence"] else "#1A7A2A")
             st.markdown(f'<div class="metric-tile"><div class="val" style="font-size:0.78rem;color:{fv};">{fl}</div><div class="lbl">Status</div></div>', unsafe_allow_html=True)
 
         st.markdown("<div style='height:14px;'></div>", unsafe_allow_html=True)
         st.markdown('<div class="section-label">▸ Intent Confidence</div>', unsafe_allow_html=True)
         conf_pct    = round(r["intent_confidence"] * 100, 1)
-        gauge_color = "#FF0000" if r["pre_classified"] else ("#FFAA33" if conf_pct < 50 else "#FF0000")
+        # Security = danger red; low conf = amber; normal = primary blue
+        gauge_color = "#CC2200" if r["pre_classified"] else ("#F59E0B" if conf_pct < 50 else "#0058A3")
         fig_g = go.Figure(go.Indicator(
             mode="gauge+number", value=conf_pct,
-            number={"suffix":"%","font":{"size":20,"color":"#F1F1F1","family":"Roboto Mono"}},
+            number={"suffix":"%","font":{"size":20,"color":"#333333","family":"Roboto Mono"}},
             gauge={
-                "axis":{"range":[0,100],"tickwidth":1,"tickcolor":"#3F3F3F","tickfont":{"size":9,"color":"#717171"}},
+                "axis":{"range":[0,100],"tickwidth":1,"tickcolor":"#C0CDD8","tickfont":{"size":9,"color":"#99A0AA"}},
                 "bar":{"color":gauge_color,"thickness":0.24},
-                "bgcolor":"#1A1A1A","bordercolor":"#3F3F3F","borderwidth":1,
+                "bgcolor":"#F5F5F5","bordercolor":"#C0CDD8","borderwidth":1,
                 "steps":[
-                    {"range":[0,40], "color":"#1A0000"},
-                    {"range":[40,70],"color":"#1A1000"},
-                    {"range":[70,100],"color":"#001A00"},
+                    {"range":[0,40],  "color":"#FEE8E8"},
+                    {"range":[40,70], "color":"#FFF8E0"},
+                    {"range":[70,100],"color":"#E8FEEE"},
                 ],
             },
         ))
         fig_g.update_layout(
             paper_bgcolor="rgba(0,0,0,0)", height=155,
             margin=dict(l=16,r=16,t=8,b=8),
-            font=dict(family="Roboto Mono", color="#F1F1F1")
+            font=dict(family="Roboto Mono", color="#333333")
         )
         st.plotly_chart(fig_g, use_container_width=True, config={"displayModeBar":False})
 
@@ -995,8 +983,8 @@ with col_right:
             st.markdown(
                 f'<div style="margin-bottom:9px;">'
                 f'<div style="display:flex;justify-content:space-between;font-size:0.74rem;margin-bottom:3px;font-family:Roboto Mono,monospace;">'
-                f'<span style="color:#AAAAAA;">{name.replace("_"," ").upper()}</span>'
-                f'<span style="color:#FF0000;font-weight:700;">{score}%</span>'
+                f'<span style="color:#666677;">{name.replace("_"," ").upper()}</span>'
+                f'<span style="color:#0058A3;font-weight:700;">{score}%</span>'
                 f'</div>'
                 f'<div class="bar-track"><div class="{bar_cls}" style="width:{min(score,100)}%;"></div></div>'
                 f'</div>', unsafe_allow_html=True
@@ -1007,27 +995,27 @@ with col_right:
         fig = go.Figure(go.Bar(
             x=list(ss.values()), y=["Negative","Neutral","Positive"],
             orientation="h",
-            marker_color=["#FF4444","#717171","#44FF44"],
+            marker_color=["#CC2200","#99A0AA","#1A7A2A"],
             text=[f"{v}%" for v in ss.values()],
             textposition="auto",
-            textfont=dict(color="#F1F1F1", size=11, family="Roboto Mono"),
+            textfont=dict(color="#333333", size=11, family="Roboto Mono"),
         ))
         fig.update_layout(
             paper_bgcolor="rgba(0,0,0,0)", plot_bgcolor="rgba(0,0,0,0)",
-            font=dict(color="#AAAAAA", family="Roboto Mono"), height=125,
+            font=dict(color="#666677", family="Roboto Mono"), height=125,
             margin=dict(l=0,r=0,t=0,b=0),
             xaxis=dict(showgrid=False, showticklabels=False, range=[0,115]),
-            yaxis=dict(showgrid=False, tickfont=dict(size=10, color="#AAAAAA")),
+            yaxis=dict(showgrid=False, tickfont=dict(size=10, color="#666677")),
             showlegend=False
         )
         st.plotly_chart(fig, use_container_width=True, config={"displayModeBar":False})
 
     else:
         st.markdown(
-            '<div style="text-align:center;padding:60px 20px;background:#1A1A1A;border:1px solid #3F3F3F;border-radius:8px;">'
-            '<div style="font-size:2rem;margin-bottom:10px;opacity:0.2;">▶</div>'
-            '<div style="font-size:0.84rem;color:#717171;font-family:Roboto Mono,monospace;">ANALYSIS RESULTS WILL APPEAR AFTER YOUR FIRST QUERY.</div>'
-            '<div style="font-size:0.73rem;color:#3F3F3F;margin-top:5px;font-family:Roboto Mono,monospace;">TYPE A QUERY ABOVE AND CLICK SEND</div>'
+            '<div style="text-align:center;padding:60px 20px;background:#FFFFFF;border:1px solid #C0CDD8;border-radius:8px;">'
+            '<div style="font-size:2rem;margin-bottom:10px;opacity:0.2;color:#0058A3;">▶</div>'
+            '<div style="font-size:0.84rem;color:#99A0AA;font-family:Roboto Mono,monospace;">ANALYSIS RESULTS WILL APPEAR AFTER YOUR FIRST QUERY.</div>'
+            '<div style="font-size:0.73rem;color:#C0CDD8;margin-top:5px;font-family:Roboto Mono,monospace;">TYPE A QUERY ABOVE AND CLICK SEND</div>'
             '</div>', unsafe_allow_html=True
         )
 
@@ -1039,22 +1027,22 @@ with col_right:
             labels=["Negative","Neutral","Positive"],
             values=[counts["negative"],counts["neutral"],counts["positive"]],
             hole=0.55,
-            marker_colors=["#FF4444","#717171","#44FF44"],
+            marker_colors=["#CC2200","#99A0AA","#1A7A2A"],
             textfont=dict(size=10, family="Roboto Mono"),
         ))
         fig2.update_layout(
             paper_bgcolor="rgba(0,0,0,0)",
-            font=dict(color="#AAAAAA", family="Roboto Mono"),
+            font=dict(color="#666677", family="Roboto Mono"),
             height=185, margin=dict(l=0,r=0,t=0,b=0), showlegend=True,
             legend=dict(
                 orientation="h", yanchor="bottom", y=-0.22,
                 xanchor="center", x=0.5,
-                font=dict(size=10, color="#AAAAAA")
+                font=dict(size=10, color="#666677")
             ),
             annotations=[dict(
                 text=f"<b>{st.session_state.total_queries}</b>",
                 x=0.5, y=0.5,
-                font=dict(size=16, color="#FF0000", family="Oswald"),
+                font=dict(size=16, color="#0058A3", family="Oswald"),
                 showarrow=False
             )]
         )
@@ -1068,18 +1056,18 @@ with col_right:
             x=[x[1] for x in sorted_i],
             y=[x[0].upper() for x in sorted_i],
             orientation="h",
-            marker_color="#FF0000", opacity=0.85,
+            marker_color="#0058A3", opacity=0.85,
             text=[x[1] for x in sorted_i],
             textposition="auto",
             textfont=dict(color="#ffffff", size=10, family="Roboto Mono"),
         ))
         fig3.update_layout(
             paper_bgcolor="rgba(0,0,0,0)", plot_bgcolor="rgba(0,0,0,0)",
-            font=dict(color="#AAAAAA", family="Roboto Mono"),
+            font=dict(color="#666677", family="Roboto Mono"),
             height=max(110, len(sorted_i)*30),
             margin=dict(l=0,r=0,t=0,b=0),
             xaxis=dict(showgrid=False, showticklabels=False),
-            yaxis=dict(showgrid=False, tickfont=dict(size=9, color="#AAAAAA")),
+            yaxis=dict(showgrid=False, tickfont=dict(size=9, color="#666677")),
             showlegend=False
         )
         st.plotly_chart(fig3, use_container_width=True, config={"displayModeBar":False})
