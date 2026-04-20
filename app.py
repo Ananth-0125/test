@@ -857,27 +857,6 @@ with col_chat:
                     if st.session_state.history_log: st.session_state.history_log[-1]["Feedback"] = "No"
                     st.rerun()
 
-    # Quick examples
-    st.markdown("<div style='font-size:0.62rem;color:#99A0AA;margin:8px 0 5px 0;font-family:Roboto Mono,monospace;letter-spacing:1px;'>▸ QUICK EXAMPLES</div>", unsafe_allow_html=True)
-    examples = [
-        "What is my account balance?",
-        "I lost my card, block it now",
-        "Someone hacked my account",
-        "Book a flight to Chennai",
-        "Translate hello to French",
-        "Late delivery, I am frustrated",
-    ]
-    eq1, eq2, eq3 = st.columns(3)
-    for col, ex in zip([eq1, eq2, eq3, eq1, eq2, eq3], examples):
-        with col:
-            if st.button(ex, key=f"ex_{ex[:10].replace(' ','_')}", use_container_width=True):
-                st.session_state["_prefill"] = ex
-                st.rerun()
-
-    if "_prefill" in st.session_state:
-        user_input = st.session_state.pop("_prefill")
-        submitted = True
-
     # Process query
     if submitted and user_input and user_input.strip():
         if not st.session_state.bert_loaded:
@@ -954,7 +933,6 @@ with col_right:
         st.markdown("<div style='height:14px;'></div>", unsafe_allow_html=True)
         st.markdown('<div class="section-label">▸ Intent Confidence</div>', unsafe_allow_html=True)
         conf_pct    = round(r["intent_confidence"] * 100, 1)
-        # Security = danger red; low conf = amber; normal = primary blue
         gauge_color = "#CC2200" if r["pre_classified"] else ("#F59E0B" if conf_pct < 50 else "#0058A3")
         fig_g = go.Figure(go.Indicator(
             mode="gauge+number", value=conf_pct,
